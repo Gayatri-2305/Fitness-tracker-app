@@ -1,0 +1,261 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Pro - Web Fitness Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            min-height: 100vh;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .workout-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.5s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Mobile-first styles */
+        @media (max-width: 640px) {
+            .app-container {
+                border-radius: 0;
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body class="pb-20">
+    <div class="app-container max-w-md mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="gradient-bg text-white p-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold">FitTrack Pro</h1>
+                    <p class="text-indigo-100">Today, <span id="current-date">June 15, 2023</span></p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+                    <i class="fas fa-user text-xl"></i>
+                </div>
+            </div>
+            
+            <!-- Stats Summary -->
+            <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                    <p class="text-xs text-indigo-100">STEPS</p>
+                    <p class="font-bold text-xl">8,542</p>
+                </div>
+                <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                    <p class="text-xs text-indigo-100">CALORIES</p>
+                    <p class="font-bold text-xl">1,240</p>
+                </div>
+                <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                    <p class="text-xs text-indigo-100">ACTIVE MIN</p>
+                    <p class="font-bold text-xl">68</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Rings -->
+        <div class="flex justify-around py-6 px-4 border-b">
+            <div class="text-center">
+                <div class="relative w-20 h-20 mx-auto mb-2">
+                    <svg class="w-full h-full" viewBox="0 0 36 36">
+                        <path
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#e2e8f0"
+                            stroke-width="3"
+                        />
+                        <path
+                            id="steps-progress"
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#4f46e5"
+                            stroke-width="3"
+                            stroke-dasharray="100, 100"
+                        />
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-sm font-bold">75%</span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500">Steps Goal</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="relative w-20 h-20 mx-auto mb-2">
+                    <svg class="w-full h-full" viewBox="0 0 36 36">
+                        <path
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#e2e8f0"
+                            stroke-width="3"
+                        />
+                        <path
+                            id="workout-progress"
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#10b981"
+                            stroke-width="3"
+                            stroke-dasharray="60, 100"
+                        />
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-sm font-bold">60%</span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500">Workouts</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="relative w-20 h-20 mx-auto mb-2">
+                    <svg class="w-full h-full" viewBox="0 0 36 36">
+                        <path
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#e2e8f0"
+                            stroke-width="3"
+                        />
+                        <path
+                            id="water-progress"
+                            d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                            fill="none"
+                            stroke="#3b82f6"
+                            stroke-width="3"
+                            stroke-dasharray="90, 100"
+                        />
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-sm font-bold">90%</span>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500">Water Intake</p>
+            </div>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <div class="flex border-b">
+            <button class="tab-btn flex-1 py-3 text-center font-medium text-indigo-600 border-b-2 border-indigo-600" data-tab="dashboard">
+                <i class="fas fa-home"></i>
+                <span class="ml-2 hidden sm:inline">Dashboard</span>
+            </button>
+            <button class="tab-btn flex-1 py-3 text-center font-medium text-gray-500" data-tab="workouts">
+                <i class="fas fa-dumbbell"></i>
+                <span class="ml-2 hidden sm:inline">Workouts</span>
+            </button>
+            <button class="tab-btn flex-1 py-3 text-center font-medium
+                        text-gray-500" data-tab="nutrition">
+                <i class="fas fa-apple-alt"></i>
+                <span class="ml-2 hidden sm:inline">Nutrition</span>
+            </button>
+        </div>
+        
+        <!-- Tab Content -->
+        <div class="tab-content active" id="dashboard">
+            <div class="p-4">
+                <h2 class="text-lg font-bold">Dashboard</h2>
+                <p class="mt-2 text-gray-600">Welcome to your fitness dashboard! Here you can track your progress and stay motivated.</p>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="workouts">
+            <div class="p-4">
+                <h2 class="text-lg font-bold">Workouts</h2>
+                <p class="mt-2 text-gray-600">Here you can log your workouts and track your fitness journey.</p>
+                <div class="mt-4">
+                    <button class="workout-card bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                        <h3 class="font-bold">Leg Day</h3>
+                        <p class="text-gray-500">Squats, Lunges, Deadlifts</p>
+                    </button>
+                    <button class="workout-card bg-white p-4 rounded-lg shadow hover:shadow-lg transition mt-2">
+                        <h3 class="font-bold">Upper Body</h3>
+                        <p class="text-gray-500">Bench Press, Rows, Pull-ups</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="nutrition">
+            <div class="p-4">
+                <h2 class="text-lg font-bold">Nutrition</h2>
+                <p class="mt-2 text-gray-600">Track your meals and stay on top of your nutrition goals.</p>
+                <div class="mt-4">
+                    <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+                        <h3 class="font-bold">Breakfast</h3>
+                        <p class="text-gray-500">Oatmeal, Eggs, Fruit</p>
+                    </button>
+                    <button class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition mt-2">
+                        <h3 class="font-bold">Lunch</h3>
+                        <p class="text-gray-500">Grilled Chicken, Quinoa, Vegetables</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('text-indigo-600', 'border-indigo-600'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to the clicked button and corresponding content
+                button.classList.add('text-indigo-600', 'border-indigo-600');
+                document.getElementById(targetTab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
