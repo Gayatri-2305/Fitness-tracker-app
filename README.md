@@ -16,3 +16,4 @@ A fitness tracker app is a mobile application that helps users monitor and manag
 
 OUTPUT:
 
+![Image](https://github.com/user-attachments/assets/a3dea67d-32a0-4357-9de5-12d5961cd0c7)
